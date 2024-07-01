@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlin.math.min
 
 class CreateActivity : AppCompatActivity() {
 
@@ -48,6 +49,8 @@ class CreateActivity : AppCompatActivity() {
         var seconds = 0;
         var name = "Unnamed Activity"
 
+        btConfirm.isEnabled = false
+
         etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -61,13 +64,16 @@ class CreateActivity : AppCompatActivity() {
 
         npMinutes.setOnValueChangedListener { picker, oldVal, newVal ->
             minutes = newVal
+            btConfirm.isEnabled = minutes != 0
             tvSelectedMinutes.setText("Minutes: " + minutes)
         }
 
         npSeconds.setOnValueChangedListener { picker, oldVal, newVal ->
             seconds = newVal
+            btConfirm.isEnabled = seconds != 0
             tvSelectedSeconds.setText("Seconds: " + seconds)
         }
+
 
         btConfirm.setOnClickListener{
             val resultIntent = Intent()

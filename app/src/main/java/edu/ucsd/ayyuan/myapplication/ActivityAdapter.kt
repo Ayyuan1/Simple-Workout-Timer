@@ -7,14 +7,46 @@ import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import java.util.Collections
 
-data class UserActivity(val name: String, val minutes: Int, val seconds: Int)
+data class UserActivity(val name: String, val minutes: Int, val seconds: Int) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readInt(),
+        parcel.readInt()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(name)
+        parcel.writeInt(minutes)
+        parcel.writeInt(seconds)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<UserActivity> {
+        override fun createFromParcel(parcel: Parcel): UserActivity {
+            return UserActivity(parcel)
+        }
+
+        override fun newArray(size: Int): Array<UserActivity?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 
 class ActivityAdapter (
     private val activities: MutableList<UserActivity>,
     private val onDuplicate: (Int) -> Unit,
     private val onDelete: (Int) -> Unit
-) : RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>() {
+) : RecyclerView.Adapter<ActivityAdapter.ActivityViewHolder>(), ItemTouchHelperAdapter {
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
@@ -39,5 +71,17 @@ class ActivityAdapter (
         holder.btDelete.setOnClickListener{ onDelete(position) }
     }
 
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(activities, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(activities, i, i - 1)
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition)
+    }
 }
 
