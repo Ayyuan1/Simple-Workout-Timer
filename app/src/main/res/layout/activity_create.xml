@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:hint="Enter name"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="@+id/tvNameLabel"
         app:layout_constraintStart_toEndOf="@+id/tvNameLabel"

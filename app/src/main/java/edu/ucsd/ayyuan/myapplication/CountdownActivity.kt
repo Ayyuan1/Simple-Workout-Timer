@@ -12,13 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
+import edu.ucsd.ayyuan.myapplication.activitylist.ActivityListItem
 
 class CountdownActivity : AppCompatActivity() {
 
     private lateinit var btPause: Button
     private lateinit var btCancel: Button
     private lateinit var tvCountDown: TextView
-    private lateinit var activityList: ArrayList<UserActivity>
+    private lateinit var activityList: ArrayList<ActivityListItem>
     private lateinit var progressBar: ProgressBar
     private lateinit var tvActivityName: TextView
     private lateinit var tvNextActivity: TextView
@@ -43,8 +44,7 @@ class CountdownActivity : AppCompatActivity() {
         tvActivityName = findViewById(R.id.tvActivityName)
         tvNextActivity = findViewById(R.id.tvNextActivity)
 
-        totalTimeInMillis = intent.getLongExtra("TOTAL_TIME", 0L)
-        activityList = intent.getParcelableArrayListExtra<UserActivity>("ACTIVITY_LIST") ?: arrayListOf()
+        activityList = intent.getParcelableArrayListExtra("activity_list") ?: arrayListOf()
 
         startCountdownTimer()
 
@@ -90,7 +90,7 @@ class CountdownActivity : AppCompatActivity() {
                 tvNextActivity.text = "Next: None"
             }
 
-            val timeInMillis = computeTimeInMillis(activity.minutes, activity.seconds)
+            val timeInMillis = activity.time
             progressBar.max = timeInMillis.toInt()
 
             countDownTimer = object : CountDownTimer(timeInMillis, 1000) {
@@ -104,13 +104,13 @@ class CountdownActivity : AppCompatActivity() {
                     progressBar.progress = progress
 
                     if (millisUntilFinished <= 5000) {
-                        playSound(R.raw.beep)
+                        playSound(R.raw.activity_ending_soon)
                     }
                 }
 
                 override fun onFinish() {
                     currentActivityIndex++
-                    playSound(R.raw.ding)
+                    playSound(R.raw.activity_ended)
                     startCountdownTimer()
                 }
             }.start()

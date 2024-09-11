@@ -13,12 +13,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlin.math.min
 
 class CreateActivity : AppCompatActivity() {
 
     companion object {
-        private const val INPUT_REQUEST_CODE = 1;
+        private const val INPUT_REQUEST_CODE = 1
+        private const val MILLISPERMINUTE = 60000
+        private const val MILLISPERSECOND = 1000
     }
     private lateinit var btConfirm: Button
     private lateinit var npMinutes: NumberPicker
@@ -27,12 +28,19 @@ class CreateActivity : AppCompatActivity() {
     private lateinit var tvSelectedSeconds: TextView
     private lateinit var etName: EditText
 
+    private var name: String = ""
+    private var timeInMillis: Long = 0L
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_create)
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         supportActionBar?.title = "New Activity"
 
         btConfirm = findViewById(R.id.btConfirm)
@@ -41,54 +49,47 @@ class CreateActivity : AppCompatActivity() {
         etName = findViewById(R.id.etName)
         tvSelectedMinutes = findViewById(R.id.tvSelectedMinutes)
         tvSelectedSeconds = findViewById(R.id.tvSelectedSeconds)
-
         npMinutes.maxValue = 60
         npSeconds.maxValue = 59
-
-        var minutes = 0;
-        var seconds = 0;
-        var name = "Unnamed Activity"
-
         btConfirm.isEnabled = false
 
+        bindPickerButtons()
+    }
+
+    private fun bindPickerButtons() {
         etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 name = s.toString()
+                btConfirm.isEnabled = timeInMillis != 0L && name.isNotBlank()
             }
 
             override fun afterTextChanged(s: Editable?) {}
 
         })
 
-        npMinutes.setOnValueChangedListener { picker, oldVal, newVal ->
-            minutes = newVal
-            btConfirm.isEnabled = minutes != 0
-            tvSelectedMinutes.setText("Minutes: " + minutes)
+        npMinutes.setOnValueChangedListener { _, oldVal, newVal ->
+            timeInMillis -= oldVal * MILLISPERMINUTE
+            timeInMillis += newVal * MILLISPERMINUTE
+            btConfirm.isEnabled = timeInMillis != 0L && name.isNotBlank()
+            tvSelectedMinutes.setText("Minutes: " + newVal)
         }
 
         npSeconds.setOnValueChangedListener { picker, oldVal, newVal ->
-            seconds = newVal
-            btConfirm.isEnabled = seconds != 0
-            tvSelectedSeconds.setText("Seconds: " + seconds)
+            timeInMillis -= oldVal * MILLISPERSECOND
+            timeInMillis += newVal * MILLISPERSECOND
+            btConfirm.isEnabled = timeInMillis != 0L && name.isNotBlank()
+            tvSelectedSeconds.setText("Seconds: " + newVal)
         }
 
 
         btConfirm.setOnClickListener{
             val resultIntent = Intent()
             resultIntent.putExtra("activity_name", name)
-            resultIntent.putExtra("activity_minutes", minutes)
-            resultIntent.putExtra("activity_seconds", seconds)
+            resultIntent.putExtra("activity_total_time", timeInMillis)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
-        }
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
         }
     }
 }
