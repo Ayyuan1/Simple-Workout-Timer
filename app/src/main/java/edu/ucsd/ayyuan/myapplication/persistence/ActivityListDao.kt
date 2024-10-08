@@ -1,4 +1,16 @@
 package edu.ucsd.ayyuan.myapplication.persistence
 
-class ActivityListDao {
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import edu.ucsd.ayyuan.myapplication.models.activityObject
+
+@Dao
+interface ActivityListDao {
+    @Query("SELECT * FROM activities")
+    fun getAllActivities(): List<ActivityEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertActivities(activities: List<activityObject>)
 }

@@ -13,6 +13,7 @@ import edu.ucsd.ayyuan.myapplication.CountdownActivity
 import edu.ucsd.ayyuan.myapplication.CreateActivity
 import edu.ucsd.ayyuan.myapplication.R
 import edu.ucsd.ayyuan.myapplication.databinding.ActivityListBinding
+import edu.ucsd.ayyuan.myapplication.models.activityObject
 
 
 class ActivityListActivity : AppCompatActivity(), ActivityListAdapter.Listener {
@@ -69,7 +70,7 @@ class ActivityListActivity : AppCompatActivity(), ActivityListAdapter.Listener {
     }
     private fun calculateTotalTime(): Long {
         for (activity in activityListAdapter.currentList) {
-            totalTime += activity.time
+            totalTime += activity.activity.time
         }
         return totalTime
     }
@@ -82,8 +83,10 @@ class ActivityListActivity : AppCompatActivity(), ActivityListAdapter.Listener {
                 val name = it.getStringExtra("activity_name").toString()
                 val totalTimeInMs = it.getLongExtra("activity_total_time", 0)
                 val newActivity = ActivityListItem(
-                    name = name,
-                    time = totalTimeInMs
+                    activity = activityObject(
+                        name = name,
+                        time = totalTimeInMs
+                    )
                 )
                 val updatedList = activityListAdapter.currentList.toMutableList()
                 updatedList.add(newActivity)
@@ -95,8 +98,10 @@ class ActivityListActivity : AppCompatActivity(), ActivityListAdapter.Listener {
     override fun onDuplicateButtonPressed(position: Int) {
         val currentItem = activityListAdapter.currentList[position]
         val copiedItem = ActivityListItem(
-            name = currentItem.name,
-            time = currentItem.time
+            activity = activityObject(
+                name = currentItem.activity.name,
+                time = currentItem.activity.time
+            )
         )
         val updatedList = activityListAdapter.currentList.toMutableList()
         updatedList.add(copiedItem)
