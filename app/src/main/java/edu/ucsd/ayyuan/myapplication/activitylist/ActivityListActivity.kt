@@ -116,6 +116,12 @@ class ActivityListActivity : AppCompatActivity(), ActivityListAdapter.Listener {
         activityListAdapter.submitList(updatedList)
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun startActivityForResult(intent: Intent, requestCode: Int) {
+        super.startActivityForResult(intent, requestCode)
+        overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true

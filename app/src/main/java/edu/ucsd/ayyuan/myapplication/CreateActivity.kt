@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.NumberPicker
@@ -41,7 +42,9 @@ class CreateActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        supportActionBar?.title = "New Activity"
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "New Exercise"
 
         btConfirm = findViewById(R.id.btConfirm)
         npMinutes = findViewById(R.id.npMinutes)
@@ -90,6 +93,21 @@ class CreateActivity : AppCompatActivity() {
             resultIntent.putExtra("activity_total_time", timeInMillis)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
+        }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

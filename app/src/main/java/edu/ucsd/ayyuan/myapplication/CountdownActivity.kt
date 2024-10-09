@@ -26,7 +26,6 @@ class CountdownActivity : AppCompatActivity() {
 
     private var currentActivityIndex = 0
     private var countDownTimer: CountDownTimer? = null
-    private var totalTimeInMillis: Long = 0L
     private var timerRunning = false
     private var timeElapsed: Long = 0L
 
@@ -82,10 +81,11 @@ class CountdownActivity : AppCompatActivity() {
     private fun startCountdownTimer() {
 
         if (currentActivityIndex < activityList.size) {
-            val activity = activityList[currentActivityIndex]
+            val activityListItem = activityList[currentActivityIndex]
+            val activity = activityListItem.activity
             tvActivityName.text = "Current: " + activity.name
             if (currentActivityIndex + 1 < activityList.size) {
-                tvNextActivity.text = "Next: " + activityList[currentActivityIndex + 1].name
+                tvNextActivity.text = "Next: " + activityList[currentActivityIndex + 1].activity.name
             } else {
                 tvNextActivity.text = "Next: None"
             }

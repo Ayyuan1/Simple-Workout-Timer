@@ -23,11 +23,11 @@ open class ActivityListAdapter (
 
     class TaskDiffCallBack : DiffUtil.ItemCallback<ActivityListItem>() {
         override fun areItemsTheSame(oldItem: ActivityListItem, newItem: ActivityListItem): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.activity.name == newItem.activity.name
         }
 
         override fun areContentsTheSame(oldItem: ActivityListItem, newItem: ActivityListItem): Boolean {
-            return oldItem.time == newItem.time
+            return oldItem.activity.name == newItem.activity.name
         }
     }
 
@@ -47,7 +47,7 @@ open class ActivityListAdapter (
 
         private val btDelete: Button = itemView.findViewById(R.id.btDelete)
         fun bind(position: Int) {
-            val activity = getItem(position)
+            val activity = getItem(position).activity
             println("SPAGHETTI" + activity.time)
             tvName.text = "${activity.name}:"
             tvTime.text = formatTime(activity.time)
