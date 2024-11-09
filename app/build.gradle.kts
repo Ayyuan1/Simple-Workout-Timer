@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 android {
@@ -31,25 +32,34 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-
     val room_version = "2.6.1"
+    // Room dependencies
+    implementation("com.google.dagger:dagger-compiler:2.51.1")
+    ksp("com.google.dagger:dagger-compiler:2.51.1")
+    implementation("androidx.room:room-ktx:$room_version")
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("com.joanzapata.iconify:android-iconify-ionicons:2.2.2") {
+        exclude(group = "com.android.support") // Exclude old Android support libraries
+    }
+    implementation("com.joanzapata.iconify:android-iconify-material-community:2.2.2") {
+        exclude(group = "com.android.support") // Exclude old Android support libraries
+    }
 
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.11.0")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

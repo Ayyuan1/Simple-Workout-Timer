@@ -3,9 +3,9 @@ package edu.ucsd.ayyuan.myapplication
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +17,8 @@ import edu.ucsd.ayyuan.myapplication.activitylist.ActivityListItem
 class CountdownActivity : AppCompatActivity() {
 
     private lateinit var btPause: Button
-    private lateinit var btCancel: Button
     private lateinit var tvCountDown: TextView
     private lateinit var activityList: ArrayList<ActivityListItem>
-    private lateinit var progressBar: ProgressBar
     private lateinit var tvActivityName: TextView
     private lateinit var tvNextActivity: TextView
 
@@ -34,23 +32,17 @@ class CountdownActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_countdown)
 
-        supportActionBar?.title = "Timer"
+        supportActionBar?.title = getString(R.string.workout_timer)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         btPause = findViewById(R.id.btPause)
-        btCancel = findViewById(R.id.btCancel)
-        tvCountDown = findViewById(R.id.tvCountdown)
-        progressBar = findViewById(R.id.progressBar)
+        tvCountDown = findViewById(R.id.countdown_timer)
         tvActivityName = findViewById(R.id.tvActivityName)
         tvNextActivity = findViewById(R.id.tvNextActivity)
 
         activityList = intent.getParcelableArrayListExtra("activity_list") ?: arrayListOf()
 
         startCountdownTimer()
-
-        btCancel.setOnClickListener{
-            countDownTimer?.cancel()
-            finish()
-        }
 
         val timeLeft = 0;
         btPause.setOnClickListener(View.OnClickListener {
@@ -91,7 +83,6 @@ class CountdownActivity : AppCompatActivity() {
             }
 
             val timeInMillis = activity.time
-            progressBar.max = timeInMillis.toInt()
 
             countDownTimer = object : CountDownTimer(timeInMillis, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
@@ -100,8 +91,6 @@ class CountdownActivity : AppCompatActivity() {
                     tvCountDown.text = String.format("%02d:%02d", minutes, seconds)
 
                     timeElapsed += 1000
-                    val progress = (timeInMillis - timeElapsed).toInt()
-                    progressBar.progress = progress
 
                     if (millisUntilFinished <= 5000) {
                         playSound(R.raw.activity_ending_soon)
@@ -116,7 +105,6 @@ class CountdownActivity : AppCompatActivity() {
             }.start()
         } else {
             tvCountDown.text = "Done"
-            progressBar.progress = progressBar.max
             showFinishedSnackBar()
         }
     }
@@ -134,5 +122,21 @@ class CountdownActivity : AppCompatActivity() {
 
     private fun computeTimeInMillis(minutes: Int, seconds: Int):Long {
         return ((minutes * 60000) + (seconds * 1000)).toLong()
+    }
+
+    override fun finish() {
+        countDownTimer?.cancel()
+        super.finish()
+        overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

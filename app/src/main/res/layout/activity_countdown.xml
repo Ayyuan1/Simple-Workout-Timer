@@ -1,63 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     tools:context=".CountdownActivity">
-
-    <TextView
-        android:id="@+id/tvCountdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0:00"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="74sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <Button
-        android:id="@+id/btPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pause"
-        app:layout_constraintBottom_toBottomOf="@+id/btCancel"
-        app:layout_constraintEnd_toStartOf="@+id/btCancel"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btCancel"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/btCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="64dp"
-        android:text="cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCountdown" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="4dp"
-        android:foregroundGravity="center"
-        android:max="100"
-        android:progress="0"
-        android:progressDrawable="@drawable/circular_progress_drawable"
-        app:layout_constraintBottom_toBottomOf="@id/progressBar"
-        app:layout_constraintEnd_toEndOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="@id/progressBar"
-        app:layout_constraintTop_toTopOf="@id/progressBar" />
 
     <TextView
         android:id="@+id/tvActivityName"
@@ -82,5 +31,50 @@
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvActivityName" />
+
+    <TextView
+        android:id="@+id/countdown_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="104sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!-- Wrap the Back, Pause, and Forward buttons in a LinearLayout -->
+    <LinearLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        >
+
+        <Button
+            android:id="@+id/btBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/backward_icon"
+            />
+
+        <Button
+            android:id="@+id/btPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pause"
+            />
+
+        <TextView
+            android:id="@+id/btForward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forward_icon" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

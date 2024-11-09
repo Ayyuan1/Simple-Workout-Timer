@@ -7,6 +7,24 @@
     android:orientation="vertical"
     >
 
+    <FrameLayout
+        android:id="@+id/no_exercises_empty_state"
+        android:layout_marginTop="240dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/no_exercises_empty_list"
+            android:textSize="24sp"
+            />
+    </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_list"
         android:layout_width="match_parent"

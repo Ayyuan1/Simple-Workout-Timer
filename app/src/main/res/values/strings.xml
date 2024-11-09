@@ -1,8 +1,19 @@
 <resources>
     <string name="simple_workout_timer">Simple Workout Timer</string>
+    <string name="workout_timer">Workout Timer</string>
+
+    <string name="forward_icon">{ion-fast-forward}</string>
+    <string name="backward_icon">{ion-fast-forward}</string>
+    <string name="pause">Pause</string>
 
     <string name="minutes_text">%s minutes</string>
     <string name="one_minutes_text">1 minutes</string>
     <string name="seconds_text">%s seconds</string>
     <string name="one_second_text">%s second</string>
+
+    <string name="no_exercises_empty_list">
+        You haven\'t added any exercises to this workout yet.
+        Tap the create button to get started!
+    </string>
+
 </resources>

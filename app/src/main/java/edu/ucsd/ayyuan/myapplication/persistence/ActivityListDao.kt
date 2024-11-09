@@ -11,6 +11,9 @@ interface ActivityListDao {
     @Query("SELECT * FROM activities")
     fun getAllActivities(): List<ActivityEntity>
 
+    @Query("SELECT * FROM activities WHERE workoutId = :workoutId")
+    fun getWorkoutById(workoutId: String): List<ActivityEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertActivities(activities: List<activityObject>)
+    suspend fun insertActivities(activities: List<ActivityEntity>)
 }

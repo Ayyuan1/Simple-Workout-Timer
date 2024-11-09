@@ -11,6 +11,9 @@ data class ActivityEntity(
     @ColumnInfo(name = "id")
     var id: String = "",
 
+    @ColumnInfo(name = "workoutId")
+    var workoutId: String = "",
+
     @ColumnInfo(name = "name")
     var name: String = "",
 

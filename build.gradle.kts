@@ -2,12 +2,12 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
-    id("org.jetbrains.kotlin.jvm") version "1.8.0" // or your preferred version
+    kotlin("jvm") version "2.0.21" apply false
 }
 
 buildscript {
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0") // or your preferred version
+        classpath(kotlin("gradle-plugin", version = "2.0.21"))
     }
 }
 

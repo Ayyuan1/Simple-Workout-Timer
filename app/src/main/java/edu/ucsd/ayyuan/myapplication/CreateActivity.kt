@@ -52,10 +52,23 @@ class CreateActivity : AppCompatActivity() {
         etName = findViewById(R.id.etName)
         tvSelectedMinutes = findViewById(R.id.tvSelectedMinutes)
         tvSelectedSeconds = findViewById(R.id.tvSelectedSeconds)
-        npMinutes.maxValue = 60
-        npSeconds.maxValue = 59
-        btConfirm.isEnabled = false
 
+        val minValue = 0
+        val maxValue = 55
+        val increment = 5
+        val rangeSize = (maxValue - minValue) / increment + 1
+        val displayedValues = arrayOfNulls<String>(rangeSize)
+        for (i in 0 until rangeSize) {
+            displayedValues[i] = (minValue + i * increment).toString()
+        }
+
+        npMinutes.maxValue = 10
+        npSeconds.setMinValue(0)
+        npSeconds.setMaxValue(displayedValues.size - 1)
+        npSeconds.setDisplayedValues(displayedValues)
+        npSeconds.setWrapSelectorWheel(true)
+
+        btConfirm.isEnabled = false
         bindPickerButtons()
     }
 
@@ -80,10 +93,10 @@ class CreateActivity : AppCompatActivity() {
         }
 
         npSeconds.setOnValueChangedListener { picker, oldVal, newVal ->
-            timeInMillis -= oldVal * MILLISPERSECOND
-            timeInMillis += newVal * MILLISPERSECOND
+            timeInMillis -= oldVal * 5 * MILLISPERSECOND
+            timeInMillis += newVal * 5 * MILLISPERSECOND
             btConfirm.isEnabled = timeInMillis != 0L && name.isNotBlank()
-            tvSelectedSeconds.setText("Seconds: " + newVal)
+            tvSelectedSeconds.setText("Seconds: " + (newVal*5))
         }
 
 
